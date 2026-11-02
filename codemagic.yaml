@@ -6,7 +6,7 @@ workflows:
     environment:
       flutter: stable
       groups:
-        - google_play # Если будете публиковать, сюда нужно добавить ключи
+        - google_play
     scripts:
       - name: Set up local properties
         script: | 
@@ -22,4 +22,4 @@ workflows:
     publishing:
       email:
         recipients:
-          - your_email@example.com # Замените на вашу почту, если хотите получать уведомления
+          - your_email@example.com
