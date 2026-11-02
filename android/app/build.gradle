@@ -1,0 +1,26 @@
+def localProperties = new Properties()
+    def localPropertiesFile = rootProject.file('local.properties')
+    if (localPropertiesFile.exists()) {
+        localProperties.load(new FileInputStream(localPropertiesFile))
+    }
+
+    def flutterRoot = localProperties.getProperty('flutter.sdk')
+    apply plugin: 'com.android.application'
+    apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
+    android {
+        compileSdkVersion flutter.compileSdkVersion
+        ndkVersion flutter.ndkVersion
+
+        defaultConfig {
+            applicationId "com.example.interlight26"
+            minSdkVersion 21
+            targetSdkVersion flutter.targetSdkVersion
+            versionCode 1
+            versionName "1.0"
+        }
+    }
+
+    flutter {
+        source '../..'
+    }
