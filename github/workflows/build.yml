@@ -10,24 +10,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17' # Фиксируем Java 17 для избежания конфликтов
+      
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           
-      - name: Nuke old android structure
-        # Принудительно удаляем старые проблемные файлы
-        run: rm -rf android
-      
-      - name: Generate fresh Android structure
-        # Создаем чистую структуру с правильными версиями Gradle
-        run: flutter create --platforms=android .
+      - name: Nuke old Android structure
+        # Жестко удаляем ВСЁ, что связано с android, чтобы создать с нуля
+        run: |
+          rm -rf android
+          rm -f pubspec.lock
+          
+      - name: Generate fresh project
+        # Создаем новый проект, который перезапишет lib/main.dart, но создаст правильный android
+        run: flutter create --platforms=android --org com.germanva .
         
       - name: Get dependencies
         run: flutter pub get
         
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-shrink
         
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
